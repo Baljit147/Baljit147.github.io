@@ -1,9 +1,11 @@
 .header {
-    background-color: white;
+
 }
 
 #name-h1 {
     font-size: 40px;
+    color: white;
+    background-color: ;
 }
 
 #linkedin {
@@ -17,9 +19,39 @@
 }
 
 .href_container {
-
+  background-color: ;
 }
 
-my-footer {
+.scroll-menu {
+  background-color: #333;
+  overflow: auto;
+  white-space: nowrap;
+}
 
+.scroll-menu a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+}
+
+.scroll-menu a:hover {
+  background-color: #777;
+}
+
+.footer {
+  background-color: #333;
+}
+
+.href_container {
+  background-color: ;
+}
+
+body {
+  background-color: #1a1a1a;
+}
+
+p {
+  color: white;
 }
