@@ -7,15 +7,15 @@ class MyHeader extends HTMLElement {
         <!-- LinkedIn logo in header -->
         <div class="href_container">
           <a href="https://www.linkedin.com/in/baljit-sanghera-30216426b/" target="_blank">
-              <img src="images/LI-Logo.png" alt="LinkedIn Logo" id="linkedin">
+              <img src="https://baljit147.github.io/images/LI-Logo.png" alt="LinkedIn Logo" id="linkedin">
           </a>
           <br>
           <a href="https://github.com/Baljit147" target="_blank">
-            <img src="images/github-mark-white.png" id="github">
+            <img src="https://baljit147.github.io/images/github-mark-white.png" id="github">
           </a>
         </div>
         <div class="scroll-menu">
-          <a href="#Linux">Linux</a>
+          <a href="linux/linux.html">Linux</a>
           <a href="#Algorithms">Algoritms</a>
           <a href="#Cyber Security">Cyber Security</a>
           <a href="#Digital Forensics">Digital Forensics</a>
@@ -37,11 +37,11 @@ class MyFooter extends HTMLElement {
     <p>Connect with me on Linkedin or checkout my github:</p>
     <div class="href_container">
           <a href="https://www.linkedin.com/in/baljit-sanghera-30216426b/" target="_blank">
-              <img src="images/LI-Logo.png" alt="LinkedIn Logo" id="linkedin">
+              <img src="https://baljit147.github.io/images/LI-Logo.png" alt="LinkedIn Logo" id="linkedin">
           </a>
           <br>
           <a href="https://github.com/Baljit147" target="_blank">
-            <img src="images/github-mark-white.png" id="github">
+            <img src="https://baljit147.github.io/images/github-mark-white.png" id="github">
           </a>
         </div>
       </div>
