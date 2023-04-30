@@ -15,7 +15,7 @@ class MyHeader extends HTMLElement {
           </a>
         </div>
         <div class="scroll-menu">
-          <a href="linux/linux.html">Linux</a>
+          <a href="https://baljit147.github.io/linux/linux.html">Linux</a>
           <a href="#Algorithms">Algoritms</a>
           <a href="#Cyber Security">Cyber Security</a>
           <a href="#Digital Forensics">Digital Forensics</a>
