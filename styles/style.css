@@ -1,65 +1,108 @@
-.header {
 
+* {
+  box-sizing: border-box;
 }
 
-#name-h1 {
-    font-size: 40px;
-    color: white;
-    background-color: ;
-}
-
-#linkedin {
-    width: auto;
-    height: 25px;
-}
-
-#github {
-    width: auto;
-    height: 25px;
-}
-
-.href_container {
-  background-color: ;
-}
-
-.scroll-menu {
-  background-color: #333;
-  overflow: auto;
-  white-space: nowrap;
-}
-
-.scroll-menu a {
-  display: inline-block;
-  color: white;
-  text-align: center;
-  padding: 14px;
-  text-decoration: none;
-}
-
-.scroll-menu a:hover {
-  background-color: #777;
-}
-
-.footer {
-  background-color: #333;
-}
-
-.href_container {
-  background-color: ;
-}
-
-body {
-  background-color: #1a1a1a;
-}
-
-p {
-  color: white;
-}
-
+/* Setting the color for all text to white */
 h2 {
   color: white;
 }
 
 h3 {
   color: white;
+}
+
+h5 {
+  color: white;
+}
+
+p {
+  color: white;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Syling the links to Linkedin and github */
+#linkedin {
+  height: 25px;
+}
+
+#github {
+  height: 25px;
+}
+
+/* Add a gray background color with some padding */
+body {
+  font-family: Arial;
+  padding: 20px;
+  background: #131516;
+}
+
+/* Header/Blog Title */
+.header {
+  padding: 30px;
+  font-size: 40px;
+  text-align: center;
+  background: #181A1B;
+}
+
+/* Create two unequal columns that floats next to each other */
+/* Left column */
+.leftcolumn {   
+  float: left;
+  width: 75%;
+}
+
+/* Right column */
+.rightcolumn {
+  float: left;
+  width: 25%;
+  padding-left: 20px;
+}
+
+/* Fake image */
+.fakeimg {
+  background-color: #484E51;
+  width: 100%;
+  padding: 20px;
+}
+
+/* About me picture */
+.about-me-image {
+  background-color: #484E51;
+  height: 40px;
+  /* width: 100%; */
+  padding: 20px;
+}
+
+/* Add a card effect for articles */
+.card {
+   background-color: #181A1B;
+   padding: 20px;
+   margin-top: 20px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Footer */
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: #2B2F31;
+  margin-top: 20px;
+}
+
+/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 800px) {
+  .leftcolumn, .rightcolumn {   
+    width: 100%;
+    padding: 0;
+  }
 }

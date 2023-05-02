@@ -1,27 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Baljit's Blog</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles/style.css">
-  </head>
+    <title>Baljit's Blog</title>
+</head>
 <body>
 
-  <my-header></my-header>
+<a href="index.html">
+  <div class="header">
+    <h2>Baljit's Blog</h2>
+  </div>
+</a>
 
-<h2>About This Blog</h2>
-<p>Welcome to my blog! Here I share some thoughts, projects and anything else I find interesting, mostly about Linux, cyber security and coding/scripting.
-<br>As an IT enthusiast I'm constantly working on, and troubleshooting... new projects.
-<br>Feel free to click on one of the above tabs to see posts for a specific topic. I hope find a post that assissts with a project or to troubleshoot an issue you are encountering.
-</p>
+<div class="row">
+  <div class="leftcolumn">
+    <a href="posts/spell_check.html">
+      <div class="card">
+        <h2>Linux and Libre Office Spell Check Fix</h2>
+        <h5>Correcting Common Spell Check Failures, May 02, 2023</h5>
+        <div class="fakeimg" style="height:200px;">Image</div>
+        <p>Some text..</p>
+        <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+      </div>
+    </a>
+    <div class="card">
+      <h2>TITLE HEADING</h2>
+      <h5>Title description, Sep 2, 2017</h5>
+      <div class="fakeimg" style="height:200px;">Image</div>
+      <p>Some text..</p>
+      <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+    </div>
+  </div>
+  <div class="rightcolumn">
+    <div class="card">
+      <h2>About Me</h2>
+      <div class="about-me-image" style="height:100px;">
+        <img src="images/about_me/DSC_3362.jpg" height="65">
+      </div>
+      <p>Welcome to my blog! Here I share some thoughts, projects and anything else I find interesting, mostly about Linux, cyber security, coding and scripting with some philosophy and travel thrown in.
+        As an IT enthusiast I'm constantly working on, and troubleshooting new projects. I hope you will find some of them useful or interesting.</p>
+    </div>
+    <div class="card">
+      <h3>Popular Post</h3>
+      <div class="fakeimg">Image</div><br>
+      <div class="fakeimg">Image</div><br>
+      <div class="fakeimg">Image</div>
+    </div>
+    <div class="card">
+      <h3>Follow Me</h3>
+      <p>Feel free to connect with me on Linkedin or check out my GitHub.</p>
+      <div class="href_container">
+        <a href="https://www.linkedin.com/in/baljit-sanghera-30216426b/" target="_blank">
+            <img src="https://baljit147.github.io/images/LI-Logo.png" alt="LinkedIn Logo" id="linkedin">
+        </a>
+        <br>
+        <a href="https://github.com/Baljit147" target="_blank">
+          <img src="https://baljit147.github.io/images/github-mark-white.png" id="github">
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 
-
-  <my-footer></my-footer>
-
-<script src=main.js></script>
+<div class="footer">
+  <h2>Footer</h2>
+</div>
 
 </body>
 </html>
