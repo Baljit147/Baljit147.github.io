@@ -24,6 +24,10 @@ a {
   text-decoration: none;
 }
 
+
+
+
+
 /* Style the code copy box */
 .copy-container {
   padding: 10px;
@@ -32,8 +36,18 @@ a {
   background-color: #181A1B;
 }
 
-button {
+#myInput {
+  padding: 30px;
+  color: white;
+  background-color: #484E51;
+}
+
+.copy-button {
   background-color: #181A1B;
+  border-radius: 10px; 
+  position: relative;
+  right: 50px;
+  bottom: 10px;
 }
 
 #copy-icon {
@@ -41,6 +55,10 @@ button {
   border-radius: 70px; 
   height: 20px;
 }
+
+
+
+
 
 /* Syling the links to Linkedin and github */
 #linkedin {
