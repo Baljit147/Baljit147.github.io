@@ -24,6 +24,24 @@ a {
   text-decoration: none;
 }
 
+/* Style the code copy box */
+.copy-container {
+  padding: 10px;
+  margin-top: 0px;
+  border-radius: 0px;
+  background-color: #181A1B;
+}
+
+button {
+  background-color: #181A1B;
+}
+
+#copy-icon {
+  background-color: #181A1B;
+  border-radius: 70px; 
+  height: 20px;
+}
+
 /* Syling the links to Linkedin and github */
 #linkedin {
   height: 25px;
