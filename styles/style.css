@@ -24,10 +24,6 @@ a {
   text-decoration: none;
 }
 
-
-
-
-
 /* Style the code copy box */
 .copy-container {
   padding: 10px;
@@ -37,9 +33,11 @@ a {
 }
 
 #myInput {
-  padding: 30px;
+  padding: 20px;
   color: white;
   background-color: #484E51;
+  font-weight: bold;
+  border-radius: 20px;
 }
 
 .copy-button {
@@ -47,7 +45,7 @@ a {
   border-radius: 10px; 
   position: relative;
   right: 50px;
-  bottom: 10px;
+  bottom: 00px;
 }
 
 #copy-icon {
@@ -55,10 +53,6 @@ a {
   border-radius: 70px; 
   height: 20px;
 }
-
-
-
-
 
 /* Syling the links to Linkedin and github */
 #linkedin {
@@ -103,14 +97,26 @@ body {
   background-color: #484E51;
   width: 100%;
   padding: 20px;
+  color: white;
+}
+
+/* Style for my screenshots  */
+.screenshots {
+  padding: 20px;
+  height: 500px;
 }
 
 /* About me picture */
 .about-me-image {
-  background-color: #484E51;
-  height: 40px;
+  background-color: #181A1B;
+  /* height: 40px; */
   /* width: 100%; */
   padding: 20px;
+  text-align: center;
+}
+
+.about-me-picture {
+
 }
 
 /* Add a card effect for articles */
