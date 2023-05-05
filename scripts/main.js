@@ -59,7 +59,7 @@ class MyRightColumn extends HTMLElement {
     </div>
     <div class="card">
       <h3>Popular Posts</h3>
-      <div class="fakeimg">How to troubleshoot common Linux and Libre Office spell check errors</div><br>
+      <div class="fakeimg"><a href="https://baljit147.github.io/posts/spell_check.html">How to troubleshoot common Linux and Libre Office spell check errors</a></div><br>
       <div class="fakeimg">Image</div><br>
       <div class="fakeimg">Image</div>
     </div>

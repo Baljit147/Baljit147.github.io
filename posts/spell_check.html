@@ -17,7 +17,7 @@
       <h5>Correcting Common Spell Check Failures, May 02, 2023</h5>
       <p>Over the last several years daily driving Arch and Debian based Linux operating systems I've enountered many little quirks. One that's occured several times over the last few years is spell check not working. Most recently I encountered this with my Kubuntu 23.04 installation. Everything was working fine when suddenly the Libre Office spell checker ceased functioning.
         Let's go through 2 possible causes. </p>
-      <h5>Solution 1, Ensure Hunspell Is Installed</h5>
+      <h4>Solution 1, Ensure Hunspell Is Installed</h4>
       <p>Let's start with a solution that fixed the problems I ran into while using Arch based distributions.
       We'll do this by checking if Hunspell is installed. Hunspell is the spell checker used by many open source and proprietary programs, including Linux.
       <br>Here's how to check if Hunspell is installed with Arch based distos:</p>
@@ -29,9 +29,69 @@
 
       <!-- <div class="fakeimg" style="height:200px;">Image</div> -->
       <img src="../images/libre_office_spell_check/hunspell_pacman_check.png" alt="pacman spell check" class="screenshots">
-      <p>Some text..</p>
-      <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+      <p>As you can see in the image above, Hunspell isn't installed. If it was found on your system along with the language you were expecting, you can skip the next step.
+        <br>Let's print the list of packages we want so you can install the ones you want or need.
+      </p>
+
+      <div class="copy-container">
+        <input type="text" value="pacman -Ss hunspel" id="myInput">
+        <button onclick="copyFunction()" class="copy-button"><img src="https://baljit147.github.io/images/copy2.png" id="copy-icon"></button>
+      </div>
+
+      <img src="../images/libre_office_spell_check/hunspell_pacman_Ss.png" alt="pacman spell check" class="screenshots">
+
+      <p>The packages we want are "hunspell" and the specific language we want, in my case hunspell-en_us</p>
+    
+      <div class="copy-container">
+        <input type="text" value="sudo pacman -S hunspell hunspell-en_us" id="myInput" style="width:350px;">
+        <button onclick="copyFunction()" class="copy-button"><img src="https://baljit147.github.io/images/copy2.png" id="copy-icon"></button>
+      </div>
+    
+      <p>As you can see below this was enough to fix the spell check issues in my Garuda Linux install.</p>
+    
+      <img src="../images/libre_office_spell_check/functioning_arch.png" alt="functioning spell check" class="screenshots">
+    
+      <p>Now let's take do the same thing in a Debian based distro.<br>
+        We can check to see if hunspell is installed with dpkg.
+      </p>
+    
+      <div class="copy-container">
+        <input type="text" value="dpkg-query --list" id="myInput">
+        <button onclick="copyFunction()" class="copy-button"><img src="https://baljit147.github.io/images/copy2.png" id="copy-icon"></button>
+      </div>
+    
+      <img src="../images/libre_office_spell_check/dpgk.png" alt="dpkg" class="screenshots">
+
+      <p>If you've got hunspell installed you can skip the next step of installing it, otherwise the command to do so is below.</p>
+
+      <div class="copy-container">
+        <input type="text" value="sudo apt install hunspell-en-us" id="myInput" style="width:300px;">
+        <button onclick="copyFunction()" class="copy-button"><img src="https://baljit147.github.io/images/copy2.png" id="copy-icon"></button>
+      </div>
+    
+      <h5>Solution 2, Libre Office Extension</h5>
+    
+      <p>Let's open up Libre Office and click on Tools > Extension Manager.</p>
+    
+      <img src="../images/libre_office_spell_check/libre_1.png" alt="dpkg" class="screenshots">
+    
+      <p>Click on "Get more extensions online..." and then download the applicable language. After that press add.</p>
+
+      <img src="../images/libre_office_spell_check/libre_2.png" alt="dpkg" class="screenshots">
+    
+      <p>Now spell check is working.</p>
+    
+      <img src="../images/libre_office_spell_check/libre_working.png" alt="libre working" class="screenshots" style="height:auto; width:1500px">
+    
+      <h4>Conclusion</h4>
+      <p>This has been a common occurance I've run into daily driving Linux over the last few years. These solutions are for Arch and Debian based distros, however
+        the same principles apply in other Linux distors.
+        Hopefully you found these solutions useful.</p>
+
+
     </div>
+
+    
 
 
     <!-- TODO
