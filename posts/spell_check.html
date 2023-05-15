@@ -22,66 +22,71 @@
       We'll do this by checking if Hunspell is installed. Hunspell is the spell checker used by many open source and proprietary programs, including Linux.
       <br>Here's how to check if Hunspell is installed with Arch based distos:</p>
       
-      <div class="copy-container">
-        <input type="text" value="pacman -Q hunspel" id="myInput">
-        <button onclick="copyFunction()" class="copy-button"><img src="https://baljit147.github.io/images/copy2.png" id="copy-icon"></button>
+      <div class="code-copy-box">
+        <pre><code>pacman -Q hunspel        </code>
+        </pre>
+        <button class="copy-button">Copy</button>
       </div>
 
       <!-- <div class="fakeimg" style="height:200px;">Image</div> -->
-      <img src="../images/libre_office_spell_check/hunspell_pacman_check.png" alt="pacman spell check" class="screenshots">
+      <img src="../images/libre_office_spell_check/hunspell_pacman_check.png" alt="pacman spell check" class="thumbnail-images">
       <p>As you can see in the image above, Hunspell isn't installed. If it was found on your system along with the language you were expecting, you can skip the next step.
         <br>Let's print the list of packages we want so you can install the ones you want or need.
       </p>
 
-      <div class="copy-container">
-        <input type="text" value="pacman -Ss hunspel" id="myInput">
-        <button onclick="copyFunction()" class="copy-button"><img src="https://baljit147.github.io/images/copy2.png" id="copy-icon"></button>
+      <div class="code-copy-box">
+        <pre><code>pacman -Ss hunspel        </code>
+        </pre>
+        <button class="copy-button">Copy</button>
       </div>
 
-      <img src="../images/libre_office_spell_check/hunspell_pacman_Ss.png" alt="pacman spell check" class="screenshots">
+      <img src="../images/libre_office_spell_check/hunspell_pacman_Ss.png" alt="pacman spell check" class="thumbnail-images">
 
       <p>The packages we want are "hunspell" and the specific language we want, in my case hunspell-en_us</p>
     
-      <div class="copy-container">
-        <input type="text" value="sudo pacman -S hunspell hunspell-en_us" id="myInput" style="width:350px;">
-        <button onclick="copyFunction()" class="copy-button"><img src="https://baljit147.github.io/images/copy2.png" id="copy-icon"></button>
+      <div class="code-copy-box">
+        <pre><code>sudo pacman -S hunspell hunspell-en_us        </code>
+        </pre>
+        <button class="copy-button">Copy</button>
       </div>
     
       <p>As you can see below this was enough to fix the spell check issues in my Garuda Linux install.</p>
     
-      <img src="../images/libre_office_spell_check/functioning_arch.png" alt="functioning spell check" class="screenshots">
+      <img src="../images/libre_office_spell_check/functioning_arch.png" alt="functioning spell check" class="thumbnail-images">
     
       <p>Now let's take do the same thing in a Debian based distro.<br>
         We can check to see if hunspell is installed with dpkg.
       </p>
     
-      <div class="copy-container">
-        <input type="text" value="dpkg-query --list" id="myInput">
-        <button onclick="copyFunction()" class="copy-button"><img src="https://baljit147.github.io/images/copy2.png" id="copy-icon"></button>
+      <div class="code-copy-box">
+        <pre><code>dpkg-query --list        </code>
+        </pre>
+        <button class="copy-button">Copy</button>
       </div>
     
-      <img src="../images/libre_office_spell_check/dpgk.png" alt="dpkg" class="screenshots">
+      <img src="../images/libre_office_spell_check/dpgk.png" alt="dpkg" class="thumbnail-images">
 
       <p>If you've got hunspell installed you can skip the next step of installing it, otherwise the command to do so is below.</p>
 
-      <div class="copy-container">
-        <input type="text" value="sudo apt install hunspell-en-us" id="myInput" style="width:300px;">
-        <button onclick="copyFunction()" class="copy-button"><img src="https://baljit147.github.io/images/copy2.png" id="copy-icon"></button>
+      <div class="code-copy-box">
+        <pre><code>sudo apt install hunspell-en-us        </code>
+        </pre>
+        <button class="copy-button">Copy</button>
       </div>
     
       <h5>Solution 2, Libre Office Extension</h5>
     
       <p>Let's open up Libre Office and click on Tools > Extension Manager.</p>
     
-      <img src="../images/libre_office_spell_check/libre_1.png" alt="dpkg" class="screenshots">
+      <img src="../images/libre_office_spell_check/libre_1.png" alt="dpkg" class="thumbnail-images">
     
       <p>Click on "Get more extensions online..." and then download the applicable language. After that press add.</p>
 
-      <img src="../images/libre_office_spell_check/libre_2.png" alt="dpkg" class="screenshots">
+      <img src="../images/libre_office_spell_check/libre_2.png" alt="dpkg" class="thumbnail-images">
     
       <p>Now spell check is working.</p>
     
-      <img src="../images/libre_office_spell_check/libre_working.png" alt="libre working" class="screenshots" style="height:auto; width:1500px">
+      <img src="../images/libre_office_spell_check/libre_working.png" alt="libre working" class="thumbnail-images" style="height:auto; width:1500px">
     
       <h4>Conclusion</h4>
       <p>This has been a common occurance I've run into daily driving Linux over the last few years. These solutions are for Arch and Debian based distros, however
