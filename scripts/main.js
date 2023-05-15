@@ -10,6 +10,28 @@ function copyFunction() {
     navigator.clipboard.writeText(copyText.value);
   }
 
+  document.addEventListener('DOMContentLoaded', function() {
+    var copyButtons = document.querySelectorAll('.copy-button');
+    
+    copyButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        var codeBlock = this.parentNode.querySelector('code');
+        
+        navigator.clipboard.writeText(codeBlock.innerText)
+          .then(function() {
+            console.log('Code copied to clipboard!');
+          })
+          .catch(function(err) {
+            console.error('Failed to copy code: ', err);
+          });
+      });
+    });
+  });
+  
+
+
+
+
 class MyHeader extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `

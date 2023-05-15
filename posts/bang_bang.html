@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../styles/style.css">
+    <title>Baljit's Blog</title>
+</head>
+<body>
+
+<my-header></my-header>
+
+<div class="row">
+  <div class="leftcolumn">
+    
+    <div class="row">
+        <div class="leftcolumn">
+          
+          <div class="card">
+              <h2>Creating the Repeat “!!” command in Fish</h2>
+              <h5>Getting bash functionality from the fish shell, May 14, 2013</h5>
+              
+              <img src="../images/bang_bang/blog_3_thumbnail.png" alt="thumbnail-bang-bang" class="thumbnail-images">
+              <h3>The Problem?</h3>
+              <p>
+                A target Linux computer or virtual machine<br>
+                If you’ve used the terminal for any amount of time, you’ve probably run a command, only to realize you needed to include sudo. You could always hit the up arrowꜛ and type sudo at the beginning of the line, but you many know that “!!” will repeat the last entry. 
+                <br><br>
+                I recently noticed I wasn’t getting this functionality with my fish shell. At first I figured there was something wrong, 
+                but if you consult the fish documentation however, you’ll see fish handles history a little differently than bash does. 
+                You can access the fish documentation by typing “help” into a fish shell. We’ll take a look at how fish handles history later on, 
+                first let’s get fish to implement “!!”.
+              </p>
+
+              <h3>
+                The Solution
+              </h3>
+
+              <p>
+                To get “!!” to work we’ll add it into fish’s configuration file. To do that we’ll open it using nano.
+              </p>
+
+              <div class="code-copy-box">
+                <pre><code>nano ~/.config/fish/config.fish         </code>
+                </pre>
+                <button class="copy-button">Copy</button>
+              </div>
+          
+              <p>
+                Once we’re here, we can add the below function between the comment(# denotes a comment), 
+                and the “end” line. You can use SHIFT + INS to paste in nano.
+              </p>
+
+              <div class="code-copy-box">
+                <pre><code>function bang_bang<br><br>    commandline -i (history -n 1)        <br><br>end<br><br><br>bind !\! 'bang_bang'</code></pre>
+                <button class="copy-button">Copy</button>
+              </div>
+          
+              <p>
+                Once finished you can press CTRL + o to save your changes. Then exit nano with CTRL + x. 
+                We can use source so we don’t have to reboot or start a new shell to test our new function. 
+              </p>
+              
+              <div class="code-copy-box">
+                <pre><code>source ~/.config/fish/config.fish        </code></pre>
+                <button class="copy-button">Copy</button>
+              </div>
+
+              <p>
+                If you’re familiar with scripting, you’ll know what a shebang line is(#!/bin/bash). 
+                Bang refers to the exclamation mark. So in this case we can call the function bang_bang. 
+                We’ll use commandline -i to write to our terminal, and the command we want is obtained with history -n 1. 
+                Finally we map, or bind, the function to “!!”. 
+              </p>
+
+              <h3>
+                Fish’s Built in Alternatives
+              </h3>
+
+              <p>
+                Now that we’ve restored the bash way of repeating a command, let’s learn some new tricks since we’re using a new shell. 
+                In fish, if you just want to run the last command again, but adding sudo, press ALT + s. Alternatively you can use ALT + ꜛ.
+              </p>
+          
+          
+          
+          
+          
+          
+          
+          
+            </div>
+
+    
+
+
+    <!-- TODO
+    Code blocks, add this tool tip https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_copy_clipboard2 -->
+
+  </div>
+  <my-right-column></my-right-column>
+</div>
+
+<my-footer></my-footer>
+
+<script src="../scripts/main.js"></script>
+</body>
+</html>
