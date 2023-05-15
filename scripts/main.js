@@ -81,9 +81,9 @@ class MyRightColumn extends HTMLElement {
     </div>
     <div class="card">
       <h3>Popular Posts</h3>
-      <div class="fakeimg"><a href="https://baljit147.github.io/posts/spell_check.html">How to troubleshoot common Linux and Libre Office spell check errors</a></div><br>
-      <div class="fakeimg"><a href="https://baljit147.github.io/posts/cracking_linux_shadow_file_passwords.html">Cracking Linux Shadow File Passwords</a></div><br>
-      <div class="fakeimg">Image</div>
+      <div class="fakeimg"><a href="https://baljit147.github.io/posts/spell_check.html" style="text-decoration: none;">How to troubleshoot common Linux and Libre Office spell check errors</a></div><br>
+      <div class="fakeimg"><a href="https://baljit147.github.io/posts/cracking_linux_shadow_file_passwords.html" style="text-decoration: none;">Cracking Linux Shadow File Passwords</a></div><br>
+      <div class="fakeimg"><a href="https://baljit147.github.io/posts/bang_bang.html" style="text-decoration: none;">Cracking Linux Shadow File Passwords</a></div>
     </div>
     <div class="card">
       <h3>Follow Me</h3>
