@@ -146,6 +146,17 @@ body {
   margin-top: 20px;
 }
 
+/* Popular Posts hyperlinks */
+.popular-posts-links {
+  color: 3391FF;
+  text-decoration: none;
+}
+
+.popular-posts-links:visited {
+  color: 3391FF;
+  text-decoration: none;
+}
+
 .code-copy-box {
   position: relative;
   display: inline-block;
