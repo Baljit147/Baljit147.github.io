@@ -83,7 +83,7 @@ class MyRightColumn extends HTMLElement {
       <h3>Popular Posts</h3>
       <div class="fakeimg"><a href="https://baljit147.github.io/posts/spell_check.html" class="popular-posts-links">How to troubleshoot common Linux and Libre Office spell check errors</a></div><br>
       <div class="fakeimg"><a href="https://baljit147.github.io/posts/cracking_linux_shadow_file_passwords.html" class="popular-posts-links">Cracking Linux Shadow File Passwords</a></div><br>
-      <div class="fakeimg"><a href="https://baljit147.github.io/posts/bang_bang.html" class="popular-posts-links">Cracking Linux Shadow File Passwords</a></div>
+      <div class="fakeimg"><a href="https://baljit147.github.io/posts/bang_bang.html" class="popular-posts-links">Creating the Repeat “!!” command in Fish</a></div>
     </div>
     <div class="card">
       <h3>Follow Me</h3>
