@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../styles/style.css">
+    <title>Baljit's Blog</title>
+</head>
+<body>
+
+<my-header></my-header>
+
+<div class="row">
+  <div class="leftcolumn">
+    
+    <div class="card">
+      <h2>Using Sticky Bits</h2>
+      <h5>Use sticky bits to grant write permissions, but not delete permissions. May 20, 2023</h5>
+
+      <img src="../images/sticky_bits/blog_3.png" alt="sticky bits" class="thumbnail-images">
+      
+      <h3>The Problem?</h3>
+      <p>
+        Linux permissions are pretty straightforward once you understand them. The permissions are read, write and execute. 
+        Read means you have access to view file or directory, think cat, ls or using a program like LibreOffice Writer. 
+        Write permissions allow you to make changes to files and directories, as in write them to the disk. 
+        Finally there’s execute, running a script for example. 
+      </p>
+
+      <img src="../images/sticky_bits/blog_1.png" alt="sticky bits" class="thumbnail-images">
+
+      <p>
+        The issue comes in when you want a person to have the ability to make changes, write, but not delete a file. 
+        This happened to me recently when I added a feature to a python script that adds writes variables to a log file. 
+        I didn’t want to accidentally delete the file, but I didn’t want to run the script with elevated privileges either. 
+      </p>
+
+      <h3>Introducing Sticky Bits</h3>
+      <p>
+        If you’ve ever seen file permissions in Linux, it usually looks something like this: -rwxrw-rw-<br>
+        And a directory would look similar, but with a d at the beginning: drwxr-xr-x<br>
+        When a sticky bit is added, it has a T at the end: -rwx-rw-rwT<br>
+      </p>
+
+      <p>
+        A sticky bit is a slight deviation from the normal way Linux permissions operate. 
+        When a sticky bit is assigned, to delete the file, a user must be the owner. 
+        Some ways this can resolve the issue I had are to change the ownership of the file to root, 
+        or to create a new system user, who would own the file.
+      </p>
+
+      <h3>Creating a System Account</h3>
+
+      <p>
+        The system account we are going to create is similar to the ones created during installation. 
+        They are setup differently than standard user accounts as no one is meant to login to them. 
+        The account won’t have a password or a home directory. We are going to use the -r flag to specify this is a system account.
+      </p>
+
+      <div class="code-copy-box">
+        <pre><code>sudo  useradd -r accountName         </code></pre>
+        <button class="copy-button">Copy</button>
+      </div>
+          
+      <p>
+        Now if you check the /etc/passwd file you can find the user we’ve created. 
+        If you go over to the /etc/shadow file you’ll see there’s no password hash stored here.
+        <br><br>
+        Now that we’ve created a new user, we’ll change the ownership of the file to this new user. 
+        To do this we’ll use the chown command. 
+      </p>
+
+      <div class="code-copy-box">
+        <pre><code>Sudo chown accountName:accountName fileName          </code></pre>
+        <button class="copy-button">Copy</button>
+      </div>
+          
+      <h3>Adding the Sticky Bit</h3>
+
+      <p>
+        Next we’ll add the sticky bit using chmod. For the test file I’m creating for this blog, 
+        I want other users to be able to write to the file, but not delete it. For the purposes of this post, 
+        I’m going to give all users read and write permissions. Assign the permissions appropriate for your circumstances. 
+        The 1 before the rest of the permissions is what adds a sticky bit. There are other ways to add a sticky bit, 
+        but I’m going to display the numeric method.
+      </p>
+
+      <div class="code-copy-box">
+        <pre><code>sudo chmod 1666 fileName          </code></pre>
+        <button class="copy-button">Copy</button>
+      </div>
+
+      <p>
+        You can verify the sticky bit was added by using -l flag with ls.
+      </p>
+
+      <img src="../images/sticky_bits/blog_2.png" alt="sticky bits" class="thumbnail-images">
+
+      <div class="code-copy-box">
+        <pre><code>ls -l fileName          </code></pre>
+        <button class="copy-button">Copy</button>
+      </div>
+
+      <p>
+        Now if you attempt to delete the file as someone other than the owner, 
+        you should get an “rm: cannot remove ‘fileName’: Operation not permitted” message.
+      </p>
+
+      <img src="../images/sticky_bits/blog_3.png" alt="sticky bits" class="thumbnail-images">
+
+    </div>
+
+    
+
+  </div>
+  <my-right-column></my-right-column>
+</div>
+
+<my-footer></my-footer>
+
+<script src="../scripts/main.js"></script>
+</body>
+</html>
