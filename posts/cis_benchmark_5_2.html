@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../styles/style.css">
+    <title>Baljit's Blog</title>
+</head>
+<body>
+
+<my-header></my-header>
+
+<div class="row">
+  <div class="leftcolumn">
+    
+    <div class="card">
+      <h2>Hardening Ubuntu SSH Server with CIS Benchmarks</h2>
+      <h5>Configuring a secure SSH Server on Ubuntu Server 22.04 LTS, June 3rd, 2023</h5>
+
+      <img src="../images/cis_benchmark_5_2/thumbnail.png" alt="sticky bits" class="thumbnail-images">
+      
+      <h3>What are CIS Benchmarks?</h3>
+      <p>
+        CIS benchmarks are best practices for configuring computer systems and networks. 
+        The Center For Internet Security(CIS) is a nonprofit organization that makes these benchmarks 
+        available to anyone who wants them free of charge. Since I’m running an Ubuntu virtual machine, 
+        it’s a good idea to ensure that my SSH server is configured securely. 
+      </p>
+
+      <h3>Implementing the Benchmarks</h3>
+      <p>
+        To implement the CIS controls, we are going to reference section 5.2 of the 
+        “CIS Ubuntu Linux 22.04 LTS Benchmark”, which can be obtained at 
+        <a href="https://www.cisecurity.org/" style="text-decoration: none;">https://www.cisecurity.org/</a>. All the controls in section 5.2 and it’s subsections are 
+        tagged “automated”. This means that we can check if the configurations need to be changed using 
+        scripts provided in the benchmark. 
+      </p>
+      <h3>Important Notes Before We Begin</h3>
+      <p>
+        This is my journey securing my server, I’m only going to show remediation steps when my server 
+        fails a check. If you are configuring your own server, you may have different outcomes and 
+        should reference the benchmark to remediate the problem. The scripts I’m using will be the 
+        ones provided in the benchmark. When I refer to “the config file” I’m referring to 
+        /etc/ssh/sshd_config. In the screenshots the shell and gui change as I enter commands directly 
+        into the virtual machine and sometimes remote in using SSH and different shells. I recommend using 
+        BASH and running the commands as the root user. 
+      </p>
+
+      <h3>5.2.1</h3>
+      <p>
+        This is the first control we are going to implement. The /etc/ssh/sshd_config file contains the 
+        configuration settings for SSH. Access to this file needs to be limited to super users. If the 
+        config file is changed by unauthorized or hostile individuals, it can allow ssh connections we 
+        wouldn’t otherwise allow. We can run the below command to check the permissions of the config file:
+      </p>
+
+      <div class="code-copy-box">
+        <pre><code>stat /etc/ssh/sshd_config         </code></pre>
+        <button class="copy-button">Copy</button>
+      </div>
+
+      <br><br>
+      <img src="../images/cis_benchmark_5_2/1.png" alt="sticky bits" class="thumbnail-images">
+
+      <p>
+        Looking at the first line that says access, we can see the Uid and Gid are set to root, however 
+        there are more permissions than necessary. Currently the read permissions are available to the 
+        owner(root), the group(root) and other(everyone else). We don’t want to the ssh config file 
+        available to everyone so we can change this with chmod.
+      </p>
+
+      <div class="code-copy-box">
+        <pre><code>sudo chmod 600 /etc/ssh/sshd_config         </code></pre>
+        <button class="copy-button">Copy</button>
+      </div>
+
+      <h3>5.2.2</h3>
+
+      <p>
+        Next up we’ll ensure that the SSH host key can only be accessed by the appropriate user. 
+        Unauthorized access will allow an attacker to impersonate the host. Page 622 of the benchmark 
+        contains the script we need to run. To run the script we can create a file called 5.2.2.sh and 
+        paste the script from the pdf.
+        <br><br>
+
+        An error I encountered was with the format of the script, copying and pasting directly returned 
+        syntax errors. I’ve reformatted the script, see below:
+      </p>
+
+      <div class="code-copy-box">
+        <pre style="white-space: pre-wrap;"><code>
+#!/usr/bin/env bash
+
+{
+    l_output=""
+    l_skgn="ssh_keys" # Group designated to own openSSH keys
+    l_skgid="$(awk -F: '($1 == "'"$l_skgn"'"){print $3}' /etc/group)"
+    awk '{print}' <<< "$(find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec stat -L -c "%n %#a %U %G %g" {} +)" |
+    (
+        while read -r l_file l_mode l_owner l_group l_gid; do
+            [ -n "$l_skgid" ] && l_cga="$l_skgn" || l_cga="root"
+            [ "$l_gid" = "$l_skgid" ] && l_pmask="0137" || l_pmask="0177"
+            l_maxperm="$(printf '%o' $((0777 & ~$l_pmask)))"
+            [ $(( $l_mode & $l_pmask )) -gt 0 ] && l_output="$l_output\n - File: \"$l_file\" is mode \"$l_mode\" should be mode: \"$l_maxperm\" or more restrictive"
+            [ "$l_owner" != "root" ] && l_output="$l_output\n - File: \"$l_file\" is owned by: \"$l_owner\" should be owned by \"root\""
+            if [ "$l_group" != "root" ] && [ "$l_gid" != "$l_skgid" ]; then
+                l_output="$l_output\n - File: \"$l_file\" is owned by group \"$l_group\" should belong to group \"$l_cga\""
+            fi
+        done
+
+        echo "5.2.2"
+        if [ -z "$l_output" ]; then
+            echo -e "\n- Audit Result:\n *** PASS ***\n"
+        else
+            echo -e "\n- Audit Result:\n *** FAIL ***$l_output\n"
+        fi
+    )
+}
+        </code></pre>
+        <button class="copy-button">Copy</button>
+      </div>
+    </div>
+
+    <p>
+      Run the script by navigating to the same folder it’s stored in and run the below command
+    </p>
+
+    <div class="code-copy-box">
+      <pre><code>bash ./5.2.2.sh         </code></pre>
+      <button class="copy-button">Copy</button>
+    </div>
+
+    <img src="../images/cis_benchmark_5_2/2.png" alt="sticky bits" class="thumbnail-images">
+
+    <p>
+      Since the test passed, no remediation is required and we can move on.
+    </p>
+
+    <h3>5.2.3</h3>
+
+    <p>
+      As we focused on private keys in the last step, we’re going to focus on the public key now. 
+      We are going to ensure that write and execute permissions aren’t available to unauthorized users, 
+      as this could allow unauthorized private keys to be authorized.
+    </p>
+
+    <img src="../images/cis_benchmark_5_2/3.png" alt="sticky bits" class="thumbnail-images">
+
+    <p>
+      As we can see in the access lines, the group and other files are read only, this means we 
+      can move on to the next security control.
+    </p>
+
+    <h3>5.2.4</h3>
+    <p>
+      For this control, we want to make sure we are limiting who has SSH access by using allow or deny 
+      group or user lists. Limiting access to only users who require access, follows the principle of 
+      least privilege. The CIS benchmark provides 2 different scripts we can run to see if this policy 
+      is in place.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code>sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print  $1}')" | grep -Pi '^\h*(allow|deny)(users|groups)\h+\H+(\h+.*)?$'        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code>grep -rPi '^\h*(allow|deny)(users|groups)\h+\H+(\h+.*)?$' /etc/ssh/sshd_config*        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div>
+
+    <p>
+      If this control is in place, we should see the list when running one of these options. It 
+      turns out this isn’t active on my server, let’s fix that. 
+      We’ll use nano to edit the file. I’m going to use the allow user option. 
+    </p>
+
+    <img src="../images/cis_benchmark_5_2/4.png" alt="sticky bits" class="thumbnail-images">
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code>sudo nano /etc/ssh/sshd_config        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div>
+
+    <h3>5.2.5</h3>
+
+    <p>
+      An important part of indecent response and digital forensics is log analysis. For the ssh logs we 
+      want to make sure we have logging enabled. The default logs are going to be “INFO” mode. Info mode 
+      is the default and will record login information. Verbose mode gives us more information, including 
+      when a user logged out and the SSH key fingerprint. We can check the mode with:
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code>sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep loglevel        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div>
+
+    <p>
+      Since my server is in “INFO” mode and I want it to be in “VERBOSE” mode, we’re going to edit 
+      the config file again.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code>sudo nano /etc/ssh/sshd_config        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div>
+
+    <p>
+      We remove the #, “uncommenting” the line, then we change the “INFO”, to “VERBOSE”.
+    </p>
+
+    <img src="../images/cis_benchmark_5_2/5.png" alt="sticky bits" class="thumbnail-images">
+
+    <h3>5.2.6</h3>
+    <p>
+      For this control we’re going to ensure Pluggable Authentication Module(PAM) is enabled. PAM 
+      allows us to set up restrictions based on things like ip address, time and other factors. 
+      <br>
+      We’re going to run the below command and we want to get a yes in return.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code>sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep -i usepam        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div>
+
+    <p>
+      Since we got a yes, we want to run the next command from the benchmark and we shouldn’t see anything.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code>grep -Ei '^\s*UsePAM\s+no' /etc/ssh/sshd_config        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div>
+    <br><br>
+
+    <img src="../images/cis_benchmark_5_2/6.png" alt="sticky bits" class="thumbnail-images">
+
+    <h3>5.2.7</h3>
+    <p>
+      In this security control we are going to disallow logging in as root through SSH. If administrative 
+      actions need to be taken, the admin can escalate privileges. Having admins use their own accounts 
+      makes it easier on investigators to attribute actions to the specific admin. 
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code>sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep permitrootlogin        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div>
+    <br><br>
+
+    <img src="../images/cis_benchmark_5_2/7.png" alt="sticky bits" class="thumbnail-images">
+
+    <p>
+      What we wanted to see was “PermitRootLogin no”. We’re going to use nano to edit the config file 
+      again. Uncomment the “PermitRootLogin” line and replace without-password to no.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code>sudo nano /etc/ssh/sshd_config        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div>
+
+    <p>
+      Now that we’ve applied the recommended remediation, let’s run both the commands the benchmark 
+      recommends again. The results may appear similar, but if you look closely, one output will contain 
+      uppercase letters while the other will not. Two 2 commands are going to check that root login isn’t 
+      permitted in two different locations.
+    </p>
+
+    <img src="../images/cis_benchmark_5_2/7_2.png" alt="sticky bits" class="thumbnail-images">
+
+    
+
+  </div>
+  <my-right-column></my-right-column>
+</div>
+
+<my-footer></my-footer>
+
+<script src="../scripts/main.js"></script>
+</body>
+</html>
