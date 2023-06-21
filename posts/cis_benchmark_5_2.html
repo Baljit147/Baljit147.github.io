@@ -16,7 +16,7 @@
       <h2>Hardening Ubuntu SSH Server with CIS Benchmarks</h2>
       <h5>Configuring a secure SSH Server on Ubuntu Server 22.04 LTS, June 3rd, 2023</h5>
 
-      <img src="../images/cis_benchmark_5_2/thumbnail.png" alt="sticky bits" class="thumbnail-images">
+      <img src="../images/cis_benchmark_5_2/thumbnail.png" alt="alt_image" class="thumbnail-images">
       
       <h3>What are CIS Benchmarks?</h3>
       <p>
@@ -59,7 +59,7 @@
       </div>
 
       <br><br>
-      <img src="../images/cis_benchmark_5_2/1.png" alt="sticky bits" class="thumbnail-images">
+      <img src="../images/cis_benchmark_5_2/1.png" alt="alt_image" class="thumbnail-images">
 
       <p>
         Looking at the first line that says access, we can see the Uid and Gid are set to root, however 
@@ -129,7 +129,7 @@
       <button class="copy-button">Copy</button>
     </div>
 
-    <img src="../images/cis_benchmark_5_2/2.png" alt="sticky bits" class="thumbnail-images">
+    <img src="../images/cis_benchmark_5_2/2.png" alt="alt_image" class="thumbnail-images">
 
     <p>
       Since the test passed, no remediation is required and we can move on.
@@ -143,7 +143,7 @@
       as this could allow unauthorized private keys to be authorized.
     </p>
 
-    <img src="../images/cis_benchmark_5_2/3.png" alt="sticky bits" class="thumbnail-images">
+    <img src="../images/cis_benchmark_5_2/3.png" alt="alt_image" class="thumbnail-images">
 
     <p>
       As we can see in the access lines, the group and other files are read only, this means we 
@@ -174,7 +174,7 @@
       We’ll use nano to edit the file. I’m going to use the allow user option. 
     </p>
 
-    <img src="../images/cis_benchmark_5_2/4.png" alt="sticky bits" class="thumbnail-images">
+    <img src="../images/cis_benchmark_5_2/4.png" alt="alt_image" class="thumbnail-images">
 
     <div class="code-copy-box">
       <pre style="white-space: pre-wrap;"><code>sudo nano /etc/ssh/sshd_config        </code></pre>
@@ -209,7 +209,7 @@
       We remove the #, “uncommenting” the line, then we change the “INFO”, to “VERBOSE”.
     </p>
 
-    <img src="../images/cis_benchmark_5_2/5.png" alt="sticky bits" class="thumbnail-images">
+    <img src="../images/cis_benchmark_5_2/5.png" alt="alt_image" class="thumbnail-images">
 
     <h3>5.2.6</h3>
     <p>
@@ -234,7 +234,7 @@
     </div>
     <br><br>
 
-    <img src="../images/cis_benchmark_5_2/6.png" alt="sticky bits" class="thumbnail-images">
+    <img src="../images/cis_benchmark_5_2/6.png" alt="alt_image" class="thumbnail-images">
 
     <h3>5.2.7</h3>
     <p>
@@ -249,7 +249,7 @@
     </div>
     <br><br>
 
-    <img src="../images/cis_benchmark_5_2/7.png" alt="sticky bits" class="thumbnail-images">
+    <img src="../images/cis_benchmark_5_2/7.png" alt="alt_image" class="thumbnail-images">
 
     <p>
       What we wanted to see was “PermitRootLogin no”. We’re going to use nano to edit the config file 
@@ -268,7 +268,455 @@
       permitted in two different locations.
     </p>
 
-    <img src="../images/cis_benchmark_5_2/7_2.png" alt="sticky bits" class="thumbnail-images">
+    <img src="../images/cis_benchmark_5_2/7_2.png" alt="alt_image" class="thumbnail-images">
+
+    <h3>5.2.8</h3>
+
+    <p>
+      For this control we’re going to disable authentication using .rhosts or hosts.equiv. While this 
+      authentication method won’t work if it’s not enabled in pam.conf, we disable it to add extra 
+      security. We want to see a “no” and a blank line. Since my server passes, I can move onto the next 
+      control.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code>sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep hostbasedauthentication        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/8.png" alt="alt_image" class="thumbnail-images">
+
+    <h3>5.2.9</h3>
+
+    <p>
+      In this control we’re going to ensure blank passwords are disabled. As this is already configured
+      on my server, we can move on.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code>sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep permitemptypasswords        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/9.png" alt="alt_image" class="thumbnail-images">
+
+    <h3>5.2.10</h3>
+
+    <p>
+      For this control we’re going to prevent the user from setting environment variables, potentially 
+      bypassing some of our security controls. We’re going to enter the below commands to verify the 
+      control is implemented.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code>sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep permituserenvironment        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code>grep -Ei '^\s*PermitUserEnvironment\s+yes' /etc/ssh/sshd_config        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/10.png" alt="alt_image" class="thumbnail-images">
+
+    <p>
+      We were looking for a “no” and a blank line, so we can move forward.
+    </p>
+
+    <h3>5.2.11</h3>
+
+    <p>
+      For this control, we’re going to ensure that the user provides a password by ignoring .rhosts and 
+      .shosts. We’ll do this using the two commands below.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code>sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep hostbasedauthentication        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> grep -Ei '^\s*ignorerhosts\s+no\b' /etc/ssh/sshd_config        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <p>
+      We are looking for a yes and a blank line. No remediation is required, so let’s go to the next step.
+    </p>
+
+    <img src="../images/cis_benchmark_5_2/11.png" alt="alt_image" class="thumbnail-images">
+
+    <h3>5.2.12</h3>
+
+    <p>
+      In this control we’re going to disable X11 forwarding. We disable this because of the potential that 
+      vulnerabilities on the server can compromise the client machine. We’re going to use the command from 
+      the benchmark and we’re hoping to get a “no”.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep -i x11forwarding        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/12_1.png" alt="alt_image" class="thumbnail-images">
+
+    <p>
+      It turns out X11 forwarding is on, we’re going to use nano to edit the config file again. X11 
+      forwarding was already uncommented, so we just change the “yes” to “no”.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> nano /etc/ssh/sshd_config        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <p>
+      Now if we run the command again, we can see X11 forwarding is off.
+    </p>
+
+    <img src="../images/cis_benchmark_5_2/12_2.png" alt="alt_image" class="thumbnail-images">
+
+    <h3>5.2.13</h3>
+
+    <p>
+      This control ensures we are using a strong encryption algorithm. The benchmark states the only 
+      FIPS 140-2 compliant ciphers our SSH server supports are aes256-ctr, aes192-ctr, aes128-ctr. 
+      Let’s run the command from the benchmark and see what our server has enabled.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep ciphers        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/13_1.png" alt="alt_image" class="thumbnail-images">
+
+    <p>
+      The benchmark says to make sure we don’t have 3des-cbc, aes128-cbc, aes192-cbc or aes256-cbc 
+      enabled. Since we don’t have any of the ones listed above enabled, we can move onto 5.2.14
+    </p>
+
+    <h3>5.2.14</h3>
+
+    <p>
+      SSH uses a cryptographic technique called Message Authentication Code(MAC). The MAC algorithm 
+      ensures the data hasn’t been tampered with. Using a weak MAC algorithm exposes users to man in 
+      the middle attacks. <br><br>
+
+      We are going to use the provided command to check which ciphers are in use and disable any that 
+      are considered weak. 
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep -i "MACs"        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <p>
+      Comparing the output to the list of weak algorithms on page 651 of the benchmark, we can see there 
+      are several weak standards in use:
+    </p>
+
+    <ul>
+      <li>umac-64-etm@openssh.com</li>
+      <li>umac-128-etm@openssh.com</li>
+      <li>hmac-sha1-etm@openssh.com</li>
+      <li>umac-64@openssh.com</li>
+      <li>umac-128@openssh.com</li>
+      <li>hmac-sha1</li>
+    </ul>
+
+    <p>
+      We can edit the config file with nano and add a line specifying only the ciphers we want to use.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> nano /etc/ssh/sshd_config        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <p>
+      If we run the command again, we can see the updated list no longer contains weak algorithms.
+    </p>
+
+    <img src="../images/cis_benchmark_5_2/14.png" alt="alt_image" class="thumbnail-images">
+
+    <h3>5.2.15</h3>
+
+    <p>Key exchange refers to two parties swapping cryptographic keys. If this exchange uses a weak 
+      algorithm, it can be vulnerable to a man in the middle attack. Using the provided command we can 
+      list allowed algorithms. 
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep -i "MACs"        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/15.png" alt="alt_image" class="thumbnail-images">
+
+    <p>
+      Since I’m using Konsole, I can use ctl + shift + f to search the konsole for the weak algorithms:
+    </p>
+
+    <ul>
+      <li>diffie-hellman-group1-sha1</li>
+      <li>diffie-hellman-group14-sha1</li>
+      <li>diffie-hellman-group-exchange-sha1</li>
+    </ul>
+
+    <p>
+      The weak key exchange algorithms weren’t in the list, so we can move on to the next control.
+    </p>
+
+    <h3>5.2.16</h3>
+
+    <p>
+      In this control we’re going to disable SSH tunneling. Tunneling can be used to create a backdoor 
+      into the network. Let’s run the provided command.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep -i allowtcpforwarding        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/16_1.png" alt="alt_image" class="thumbnail-images">
+
+    <p>It turns out tunneling is allowed, let’s use nano to change this in the config file.</p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> nano /etc/ssh/sshd_config        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <p>
+      I’m going to change AllowTcpForwarding from “yes” to “no” and uncomment it. Now if we run the below 
+      two commands we should see a “no” and a blank line.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep -i allowtcpforwarding        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> grep -Ei '^\s*AllowTcpForwarding\s+yes' /etc/ssh/sshd_config        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/16_2.png" alt="alt_image" class="thumbnail-images">
+
+    <h3>5.2.17</h3>
+
+    <p>
+      In this control we’re going to make sure the banner is configured, it’s usually off by default. The 
+      banner message contains a warning message that let’s people know that unauthorized connections are 
+      illegal. This can be useful during prosecution of cyber criminals. Let’s run the command the 
+      benchmark provides us.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep banner        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/17_1.png" alt="alt_image" class="thumbnail-images">
+
+    <p>
+      The output we got was “banner none”, we wanted to see “banner /etc/issue.net”. We’re going to go 
+      into the config file again and change “Banner to /etc/issue.net”
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> nano /etc/ssh/sshd_config        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/17_2.png" alt="alt_image" class="thumbnail-images">
+
+    <p>Now that the banner is enabled, we can change the default banner message by editing 
+      /etc/isssue.net. What to put there is out of the scope of this project so let’s move on to the 
+      next control.
+    </p>
+
+    <h3>5.2.18</h3>
+
+    <p>
+      For this control we’re going to specify the maximum login attempts available to a connection. 
+      This is to prevent brute force attacks. When a client hits half the attempt number, it writes 
+      the error messages to the syslog file. Let’s run the command and see the number of allowed attempts.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep maxauthtries        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/18_1.png" alt="alt_image" class="thumbnail-images">
+
+    <p>
+      On my server the maximum number of attempts is 6. I’m not going to change that. The number is set 
+      in the config file under “maxauthtries”.
+      <br><br>
+      Next we’re going to run the final command for this step and it should return a blank line.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> grep -Ei '^\s*maxauthtries\s+([5-9]|[1-9][0-9]+)' /etc/ssh/sshd_config        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/18_2.png" alt="alt_image" class="thumbnail-images">
+
+    <h3>5.2.19</h3>
+
+    <p>
+      In this control we’re going to add a protection against denial of service attacks. We do this 
+      by limiting the number of connection requests by users who haven’t already authenticated(logged in). 
+      Let’s run the command the benchmark gives us.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep -i maxstartups        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/19_1.png" alt="alt_image" class="thumbnail-images">
+
+    <p>
+      The benchmark recommends we have “maxstartups” set to 10:30:60 or more restrictive. Let’s look at 
+      what these numbers means and see if our server meets the benchmark. The first number is “start”, 
+      when the rule begins to apply. So after 10 unauthenticated sessions, the rule begins to apply. The 
+      second number is the number of connections per second. In our case and in the benchmark this is 30. 
+      The final number is the number of attempts before all new connections are declined. In this case 
+      ours is set to 100 but it should be 60 or less. We can edit our config file as we’ve done many 
+      times before.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> nano /etc/ssh/sshd_config        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <p>
+      Now that we’ve updated our maxstartups, we can run the commands from the benchmark and we should 
+      see 10:30:60 or a more restrictive setting, and a blank line for the second command.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep -i maxstartups        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> grep -Ei '^\s*maxstartups\s+(((1[1-9]|[1-9][0-9][0-9]+):([0-9]+):([0-9]+))|(([0-9]+):(3[1-9]|[4-9][0-9]|[1-9][0-9][0-9]+):([0-9]+))|(([0-9]+):([0-9]+):(6[1-9]|[7-9][0-9]|[1-9][0-9][0-9]+)))' /etc/ssh/sshd_config        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/19_2.png" alt="alt_image" class="thumbnail-images">
+
+    <h3>5.2.20</h3>
+
+    <p>
+      This control is another denial of service protection. We’re going to limit the number of sessions 
+      to avoid overwhelming the server. This is decided by the “maxsessions” variable in the config file. 
+      Let’s run the command below and see how many connections are currently allowed.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep -i maxsessions        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/20_1.png" alt="alt_image" class="thumbnail-images">
+
+    <p>
+      My server has max sessions set to 10. Let’s run the next command, it shouldn’t return anything other 
+      than a blank line.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> grep -Ei '^\s*MaxSessions\s+(1[1-9]|[2-9][0-9]|[1-9][0-9][0-9]+)' /etc/ssh/sshd_config        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/20_2.png" alt="alt_image" class="thumbnail-images">
+
+    <h3>5.2.21</h3>
+
+    <p>
+      For this control we’ll look at “LoginGraceTime”. This parameter indicates the amount of time a user 
+      has to authenticate. Limiting the login grace time can help protect against brute force attacks and 
+      it’ll limit the number of unauthenticated connections active at one time. We’ll run the below 2 
+      commands and should see 60 and a blank line. 60 seconds is what the benchmark recommends so I’m 
+      going to use that for my server.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep logingracetime        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/21.png" alt="alt_image" class="thumbnail-images">
+
+    <p>
+      It appears the grace time is currently set to 120. We can nano into the config file and change it to 60. 
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> nano /etc/ssh/sshd_config        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <p>
+      The config file had the time listed as 2m, denoting the time is listed in minutes but printed in 
+      seconds. I’ve uncommented the line and changed the 2 to a 1. When running the commands again, we 
+      get the desired output.
+    </p>
+
+    <h3>5.2.22</h3>
+    <p>
+      In the final control we’re going to stop connections from staying alive indefinitely. Letting 
+      connections live forever can cause resource exhaustion. There are 2 variables that control this, 
+      “clientaliveinterval” and “clientalivecountmax”. The “clientaliveinterval”  needs to be greater 
+      than 0. We can do so with the command provided.
+    </p>
+
+    <div class="code-copy-box">
+      <pre style="white-space: pre-wrap;"><code> sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep clientaliveinterval        </code></pre>
+      <button class="copy-button">Copy</button>
+    </div><br><br>
+
+    <img src="../images/cis_benchmark_5_2/22_1.png" alt="alt_image" class="thumbnail-images">
+
+    <p>
+      The parameter doesn’t work unless it’s greater than 0, so we’ll need to edit it in the config file. 
+      Before I do that I’m going to check “clientalivecountmax” so we don’t have to go into the file 
+      multiple times if the second parameter doesn’t pass the benchmark.
+    </p>
+
+    <img src="../images/cis_benchmark_5_2/22_2.png" alt="alt_image" class="thumbnail-images">
+
+    <h3>Conclusion</h3>
+
+    <p>
+      Not following the guidance of the benchmarks can be negligent and leave your organization and users 
+      at risk of compromise. Implementing CIS benchmarks can seem long and tedious, but going through the 
+      process you can learn an incredible amount while securing the respective services. I highly recommend 
+      anyone interested in cyber security go through the process of implementing a CIS benchmark for 
+      something they use on a daily basis. 
+    </p>
+    
+
+
 
     
 
